@@ -1,0 +1,15 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}
+      Home page
+{% endblock title %}
+{% block content %}
+      <div class="w-full mx-auto text-center">
+            <img src="{% static 'images/logo.png' %}"
+                 class="absolute w-1/2 left-1/2 -translate-x-1/2"
+                 alt="DjangoX logo"/>
+            <h3 class='w-full text-white roboto text-9xl top-1/2 -translate-y-1/2 absolute left-1/2 -translate-x-1/2'>
+                  Web Scraper
+            </h3>
+      </div>
+{% endblock content %}

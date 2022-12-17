@@ -1,0 +1,23 @@
+[
+  {
+    "model": "pages.itemstatus",
+    "pk": 1,
+    "fields": {
+      "title": "Unprocessed"
+    }
+  },
+  {
+    "model": "pages.itemstatus",
+    "pk": 2,
+    "fields": {
+      "title": "Processing"
+    }
+  },
+  {
+    "model": "pages.itemstatus",
+    "pk": 3,
+    "fields": {
+      "title": "Processed"
+    }
+  }
+]

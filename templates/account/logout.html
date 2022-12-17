@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+  Log out
+{% endblock %}
+{% block content %}
+  <h1 class='block text-center px-12 bg-slate-900 roboto text-white'>Sign Out</h1>
+  <div class='absolute left-1/2 -translate-x-1/2 bg-slate-900 p-24 rounded-md'>
+    <p class='text-xl roboto text-white'>Are you sure you want to sign out?</p>
+    <form method="post" action="{% url 'account_logout' %}">
+      {% csrf_token %} {{ form|crispy }}
+      <button class="cursor-pointer bg-blue-800 text-white roboto-condensed border-2 border-black text-lg"
+              type="submit">
+        Sign Out
+      </button>
+    </form>
+  </div>
+{% endblock content %}

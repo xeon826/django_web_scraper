@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}
+  Identify Items
+{% endblock title %}
+{% block content %}
+  <h1 class='block text-center px-12 bg-slate-900 text-xl roboto text-white'>Item Identifier</h1>
+  <div class='absolute left-1/2 w-3/5 -translate-x-1/2 bg-slate-900 px-24 py-12 rounded-md'>
+    {% if have_items %}
+      <h3 class='block text-left bg-blue-900 p-4'>{{ item.name }}</h3>
+      <form method="post" id='item-grid' action="{% url 'item_identify_save' %}">
+        {% csrf_token %}
+        <div class='grid grid-cols-5 gap-x-4 gap-y-4'>
+          {% for img in image_list %}
+            <div class='w-full relative overflow-hidden p-2 hover:scale-125 cursor-pointer hover:z-20 item'>
+              <img src="{{ img }}"
+                   class="max-h-24 pointer-events-none object-contain w-full"/>
+            </div>
+          {% endfor %}
+        </div>
+        <input type='hidden'
+               required
+               name='item_id'
+               value='{{ item.id }}'
+               id='item-id'/>
+        <input type='hidden' required name='img_url' id='img-url' />
+        <div class='w-full mt-12'>
+          <a href="{% url 'item_skip' %}?item_id={{ item.id }}">
+            <button class="cursor-pointer bg-blue-800 text-white roboto-condensed border-2 border-black text-lg"
+                    type="button">
+              Skip
+            </button>
+          </a>
+          <button class="float-right cursor-pointer bg-blue-800 text-white roboto-condensed border-2 border-black text-lg"
+                  type="submit">
+            Save
+          </button>
+        </div>
+      </form>
+    {% else %}
+      <h3 class='block text-left text-base bg-blue-900 p-4'>It looks like there are no items present in the database, please <a class='text-blue-200' href="/{{'import_item_list'}}">import an item list</a> first.</h3>
+    {% endif %}
+  </div>
+{% endblock content %}

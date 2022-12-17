@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+Import Item List
+{% endblock %}
+{% block content %}
+    <h1 class="block text-center px-12 bg-slate-900 roboto text-xl text-white">Import Item List</h1>
+    <div class="absolute left-1/2 -translate-x-1/2 bg-slate-900 p-24 rounded-md">
+        <form id='import-item-list-form' action="{% url 'parse_item_file' %}" method="post" class='crispy-form' enctype="multipart/form-data">
+            {% csrf_token %}
+            <input required type="file" id="myFile" name="item-list" accept='.txt'>
+            <button class="cursor-pointer bg-blue-800 text-white roboto-condensed border-2 border-black text-lg"
+                    type="submit">
+                    Import
+            </button>
+        </form>
+    </div>
+{% endblock content %}
