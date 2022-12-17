@@ -1,4 +1,6 @@
 ```
+Tested and working with python3.8.10 and Django 4.1.2
+
 $ python -m venv .venv
 
 # Windows
