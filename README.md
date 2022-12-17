@@ -17,5 +17,5 @@ $ source .venv/bin/activate
 (.venv) $ cp .env.example .env
 Add GAPI and PROJECT_CX keys to .env file
 (.venv) $ python manage.py runserver
-# Load the site at http://127.0.0.1:8000
+# Load the site at http://localhost:8000
 ```
