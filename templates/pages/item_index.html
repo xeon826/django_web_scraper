@@ -6,6 +6,20 @@
 {% block content %}
     <h1 class='block text-center px-12 bg-slate-900 text-xl roboto text-white'>Item Index</h1>
     <div class='absolute left-1/2 w-3/5 -translate-x-1/2 bg-slate-900 px-24 py-12 rounded-md'>
+        <form method='GET' action="{% url 'item_index' %}" class='mb-6 '>
+            <div class='child:inline child:ml-6'>
+                <input type='hidden', name='form_submitted' value='1' />
+                <div>{{ form }}</div>
+                {% csrf_token %}
+                <div>
+                    <button type='submit'
+                            class='cursor-pointer bg-blue-800 text-white roboto-condensed border-2 border-black text-lg'>
+                        <span class="material-icons material-symbols-outlined">filter_list</span>
+                        Filter
+                    </button>
+                </div>
+            </div>
+        </form>
         <table class='table-fixed border-collapse w-full child:border child:border-blue-500 child:border-solid'>
             <thead class=''>
                 <tr class='child:text-left px-2 child:p-2'>
@@ -15,7 +29,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            {% for item in items %}
+            {% for item in page_obj %}
                 <tr class='child:w-1/5 child:overflow-hidden child:p-2 child:border-collapse child:border-solid child:border-blue-500 child:border'>
                     <td>{{ item.name }}</td>
                     <td class=''>
@@ -26,9 +40,33 @@
                         {% endif %}
                     </td>
                     <td>{{ item.status }}</td>
-                    <td>{% if item.status.title != 'Processing' %}<a href='#' class='text-white bg-blue-500 p-2 rounded-md no-underline'><span class="material-icons">redo</span> {% if item.status.title == 'Processed' %}Re-{% endif %}Process</a>{% if item.status.title == 'Processed' %} | <a href='#' class='text-white bg-blue-500 p-2 rounded-md no-underline'><span class="material-icons">undo</span> Unprocess</a>{% endif %}{% endif %}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
+                    <td>
+                        {% if item.status.title != 'Processing' %}
+                        <a href="{% url 'item_identify' %}?item_id={{ item.id }}&return_to_index=1"
+                           class='text-white bg-blue-500 p-2 rounded-md no-underline'><span class="material-icons">redo</span>
+                        {% if item.status.title == 'Processed' %}Re-{% endif %}
+                    Process</a>
+                    {% if item.is_processed %}
+                        | <a href="{% url 'unprocess' %}?item_id={{ item.id }}"
+    class='text-white bg-blue-500 p-2 rounded-md no-underline'><span class="material-icons">undo</span> Unprocess</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<div class="pagination mt-6">
+    <span class="step-links child:text-white">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">previous</a>
+        {% endif %}
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
 {% endblock content %}

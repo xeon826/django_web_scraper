@@ -21,4 +21,5 @@ urlpatterns = [
     path("about/", AboutPageView.as_view(), name="about"),
     path("item_index/", login_required(item_index), name="item_index"),
     path("settings/", login_required(settings), name="settings"),
+    path("unprocess/", login_required(unprocess), name="unprocess"),
 ]

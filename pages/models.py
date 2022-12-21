@@ -3,7 +3,7 @@ from django.conf import settings
 
 
 class ItemStatus(models.Model):
-    title = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=50, unique=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -23,3 +23,6 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+    def is_processed(self):
+        return True if self.status.title == 'Processed' else False

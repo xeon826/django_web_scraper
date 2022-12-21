@@ -61,6 +61,14 @@
   margin-top: 3rem;
 }
 
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
 .mb-12 {
   margin-bottom: 3rem;
 }
@@ -561,6 +569,10 @@ body {
   margin-right: 3rem;
 }
 
+.child\:ml-6 > * {
+  margin-left: 1.5rem;
+}
+
 .child\:inline > * {
   display: inline;
 }
@@ -604,4 +616,9 @@ body {
 
 .child\:text-left > * {
   text-align: left;
+}
+
+.child\:text-white > * {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }

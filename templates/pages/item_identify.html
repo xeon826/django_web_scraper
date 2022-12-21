@@ -24,13 +24,16 @@
                value='{{ item.id }}'
                id='item-id'/>
         <input type='hidden' required name='img_url' id='img-url' />
+        <input type='hidden' name='return_to_index' {% if return_to_index %}value="1"{% endif %}/>
         <div class='w-full mt-12'>
+          {% if not return_to_index %}
           <a href="{% url 'item_skip' %}?item_id={{ item.id }}">
             <button class="cursor-pointer bg-blue-800 text-white roboto-condensed border-2 border-black text-lg"
                     type="button">
               Skip
             </button>
           </a>
+          {% endif %}
           <button class="float-right cursor-pointer bg-blue-800 text-white roboto-condensed border-2 border-black text-lg"
                   type="submit">
             Save
