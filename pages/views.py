@@ -9,6 +9,7 @@ from google_images_search import GoogleImagesSearch
 import os
 from dotenv import load_dotenv
 from django.contrib.auth.signals import user_logged_out
+from django.core.paginator import Paginator
 
 
 def logged_out(sender, **kwargs):
@@ -32,6 +33,12 @@ class ImportItemListPageView(TemplateView):
     template_name = "pages/import_item_list.html"
 
 
+def item_index(request, template_name='pages/item_index.html'):
+    args = {}
+    args['items'] = Item.objects.all()[:30]
+    return TemplateResponse(request, template_name, args)
+
+
 def parse_item_file(request, template_name='pages/parse_item_file.html'):
     item_list = request.FILES['item-list']
     file_extension = os.path.splitext(item_list.name)[1]
@@ -51,10 +58,6 @@ def parse_item_file(request, template_name='pages/parse_item_file.html'):
 
 
 def item_identify(request, template_name="pages/item_identify.html"):
-    load_dotenv()
-    gis = GoogleImagesSearch(os.environ['GAPI_KEY'],
-                             os.environ['PROJECT_CX'],
-                             validate_images=False)
     user = CustomUser.objects.get(pk=request.user.id)
     item = Item.objects.filter(status='Processing', assigned_to=user).first()
     unprocessed_item = Item.objects.filter(status__title='Unprocessed').first()
@@ -69,18 +72,42 @@ def item_identify(request, template_name="pages/item_identify.html"):
         item.status = ItemStatus.objects.filter(title='Processing').first()
         item.assigned_to = user
         item.save()
-    _search_params = {'q': item.name, 'num': 35, 'fileType': 'jpg|gif|png'}
-    gis.search(search_params=_search_params)
     image_list = []
-    for image in gis.results():
-        if not validators.url(image.url):
-            continue
-        image_list.append(image.url)
-        if len(image_list) >= 20:
-            break
+    image_list = get_image_results(item.name, user.gis_validation, user)
     args['image_list'] = image_list
     args['item'] = item
     return TemplateResponse(request, template_name, args)
+
+
+def get_image_results(item_name, gis_validation=False, user=''):
+    load_dotenv()
+    gis = GoogleImagesSearch(os.environ['GAPI_KEY'],
+                             os.environ['PROJECT_CX'],
+                             validate_images=gis_validation)
+    gis.search(
+        search_params={
+            'q':
+            item_name,
+            'num':
+            user.items_per_grid if gis_validation else user.items_per_grid +
+            15,
+            'fileType':
+            'jpg|gif|png'
+        })
+    image_list = gis.results() if gis_validation else validate_images(
+        gis.results(), user)
+    return image_list
+
+
+def validate_images(image_list, user):
+    result = []
+    for image in image_list:
+        if not validators.url(image.url):
+            continue
+        result.append(image)
+        if len(result) >= user.items_per_grid:
+            break
+    return result
 
 
 def item_identify_save(request):
@@ -100,3 +127,14 @@ def item_skip(request):
 
 class AboutPageView(TemplateView):
     template_name = "pages/about.html"
+
+
+def settings(request, template_name="pages/settings.html"):
+    user = CustomUser.objects.get(pk=request.user.id)
+    if request.method == 'POST':
+        user.gis_validation = bool(request.POST.get('gis_validation', ''))
+        user.items_per_grid = int(request.POST.get('items_per_grid', ''))
+        user.save()
+    args = {}
+    args['user'] = user
+    return TemplateResponse(request, template_name, args)

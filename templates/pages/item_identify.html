@@ -7,13 +7,13 @@
   <h1 class='block text-center px-12 bg-slate-900 text-xl roboto text-white'>Item Identifier</h1>
   <div class='absolute left-1/2 w-3/5 -translate-x-1/2 bg-slate-900 px-24 py-12 rounded-md'>
     {% if have_items %}
-      <h3 class='block text-left bg-blue-900 p-4'>{{ item.name }}</h3>
+      <h3 class='block text-left bg-blue-900 p-4'><span>{{ item.name }}</span></h3>
       <form method="post" id='item-grid' action="{% url 'item_identify_save' %}">
         {% csrf_token %}
         <div class='grid grid-cols-5 gap-x-4 gap-y-4'>
           {% for img in image_list %}
             <div class='w-full relative overflow-hidden p-2 hover:scale-125 cursor-pointer hover:z-20 item'>
-              <img src="{{ img }}"
+              <img src="{{ img.url }}"
                    class="max-h-24 pointer-events-none object-contain w-full"/>
             </div>
           {% endfor %}

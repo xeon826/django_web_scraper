@@ -1,7 +1,8 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 
-from .views import HomePageView, AboutPageView, item_identify, ImportItemListPageView, parse_item_file, item_identify_save, item_skip
+# from .views import HomePageView, AboutPageView, item_identify, ImportItemListPageView, parse_item_file, item_identify_save, item_skip, item_index
+from .views import *
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
@@ -18,4 +19,6 @@ urlpatterns = [
          login_required(parse_item_file),
          name='parse_item_file'),
     path("about/", AboutPageView.as_view(), name="about"),
+    path("item_index/", login_required(item_index), name="item_index"),
+    path("settings/", login_required(settings), name="settings"),
 ]

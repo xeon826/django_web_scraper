@@ -1,0 +1,22 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}
+    Settings
+{% endblock title %}
+{% block content %}
+    <h1 class='block text-center px-12 bg-slate-900 text-xl roboto text-white'>Settings</h1>
+    <div class='absolute left-1/2 w-3/5 -translate-x-1/2 bg-slate-900 px-24 py-12 rounded-md'>
+        <form action="{% url 'settings' %}" method='POST'>
+            {% csrf_token %}
+            <div class='block mb-12'>
+                <label>Enable GIS validation (slower, more accurate):</label>
+                <input type='checkbox' value='1' {{ user.gis_validation|yesno:'checked,""' }} name='gis_validation'/>
+            </div>
+            <div class='block mb-12'>
+                <label>Items Per Grid:</label>
+                <input type='number' class='ml-2' value='{{user.items_per_grid}}' max=30 min=10 name='items_per_grid'/>
+            </div>
+            <button class='float-right' type='submit'>Save</button>
+        </form>
+    </div>
+{% endblock content %}

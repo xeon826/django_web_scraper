@@ -31,6 +31,8 @@
       rel="stylesheet"
       type="text/css"
     />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     {% endblock %}
   </head>
@@ -40,6 +42,8 @@
       <li class=''><a class="no-underline text-white roboto font-bold" href="{% url 'account_logout' %}">Sign out ({{user}})</a></li>
       <li class=''><a class="no-underline text-white roboto font-bold" href="{% url 'item_identify' %}">Item Identifier</a></li>
       <li class=''><a class="no-underline text-white roboto font-bold" href="{% url 'import_item_list' %}">Import Item List</a></li>
+      <li class=''><a class="no-underline text-white roboto font-bold" href="{% url 'item_index' %}">Item Index</a></li>
+      <li class=''><a class="no-underline text-white roboto font-bold" href="{% url 'settings' %}">Settings</a></li>
       {% else %}
       <li class=''><a class="no-underline text-white roboto font-bold" href="{% url 'account_login' %}">Login</a></li>
       <li class=''><a class="no-underline text-white roboto font-bold" href="{% url 'account_signup' %}">Sign up</a></li>
