@@ -1,4 +1,6 @@
 ```
+Tested and working with python3.8.10 and Django 4.1.2
+
 $ python -m venv .venv
 
 # Windows
@@ -12,6 +14,8 @@ $ source .venv/bin/activate
 (.venv) $ python manage.py migrate
 (.venv) $ python manage.py createsuperuser
 (.venv) $ python manage.py loaddata item_status
+(.venv) $ cp .env.example .env
+Add GAPI and PROJECT_CX keys to .env file
 (.venv) $ python manage.py runserver
-# Load the site at http://127.0.0.1:8000
+# Load the site at http://localhost:8000
 ```
